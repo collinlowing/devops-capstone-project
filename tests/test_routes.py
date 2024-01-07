@@ -26,6 +26,8 @@ HTTPS_ENVIRON = {'wsgi.url_scheme': 'https'}
 ######################################################################
 #  T E S T   C A S E S
 ######################################################################
+
+
 class TestAccountService(TestCase):
     """Account Service Tests"""
 
@@ -132,7 +134,7 @@ class TestAccountService(TestCase):
         """It should return an account with ID"""
         account = self._create_accounts(1)[0]
         response = self.client.get(
-            f"{BASE_URL}/{account.id}", 
+            f"{BASE_URL}/{account.id}",
             content_type="application/json"
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -143,12 +145,12 @@ class TestAccountService(TestCase):
         self.assertEqual(new_account["address"], account.address)
         self.assertEqual(new_account["phone_number"], account.phone_number)
         self.assertEqual(new_account["date_joined"], str(account.date_joined))
-    
+
     def test_account_not_found(self):
         """It should not return an account if the account does not exist"""
-        id = 0;
+        id = 0
         response = self.client.get(
-            f"{BASE_URL}/{id}", 
+            f"{BASE_URL}/{id}",
             content_type="application/json"
         )
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
@@ -166,7 +168,7 @@ class TestAccountService(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         updated_account = response.get_json()
         self.assertEqual(updated_account["name"], test_name)
-    
+
     def test_update_nonexistant_account(self):
         """It should not update an account that does not already exist"""
         id = 0
@@ -184,7 +186,7 @@ class TestAccountService(TestCase):
         """It should remove accounts"""
         account = self._create_accounts(1)[0]
         response = self.client.delete(
-            f"{BASE_URL}/{account.id}", 
+            f"{BASE_URL}/{account.id}",
             content_type="application/json"
         )
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
@@ -197,10 +199,10 @@ class TestAccountService(TestCase):
             content_type="application/json"
         )
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
-    
+
     def test_list_all_accounts(self):
         """It should list all accounts"""
-        accounts = self._create_accounts(5)
+        self._create_accounts(5)
         response = self.client.get(BASE_URL)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         data = response.get_json()
@@ -223,7 +225,7 @@ class TestAccountService(TestCase):
         }
         for key, value in headers.items():
             self.assertEqual(response.headers.get(key), value)
-        
+
     def test_cors_security(self):
         """It should return a CORS header"""
         response = self.client.get('/', environ_overrides=HTTPS_ENVIRON)
