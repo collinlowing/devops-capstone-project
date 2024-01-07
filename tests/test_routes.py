@@ -190,12 +190,12 @@ class TestAccountService(TestCase):
             content_type="application/json"
         )
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
-    
+
     def test_delete_nonexistant_account(self):
         """It should not delete an account that does not already exist"""
         id = 0
         response = self.client.delete(
-            f"{BASE_URL}/{id}", 
+            f"{BASE_URL}/{id}",
             content_type="application/json"
         )
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
